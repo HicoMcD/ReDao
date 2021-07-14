@@ -4,7 +4,7 @@ import detectEthereumProvider from '@metamask/detect-provider';
 console.log('fromMetamask');
 let provider;
 
-class Address extends Component{
+class Metamask extends Component{
     state = {
         account: '',
     };
@@ -25,7 +25,7 @@ class Address extends Component{
         return (
             <main>
                 <form>
-                    <button onClick={this.ConnectMetamask}>Enable Ethereum and Show Address</button>
+                    <button onClick={this.ConnectMetamask}>Enable Ethereum and Show Metamask Address</button>
                     <br></br>
                     <label>Account:{this.state.account}</label>
                 </form>
@@ -34,4 +34,4 @@ class Address extends Component{
     };
 }
 
-export default Address;
+export default Metamask;
