@@ -1,32 +1,57 @@
-import { ethers } from "ethers";
+import { ethers, Signer } from "ethers";
 
 //Provider
-// If you don't specify a //url//, Ethers connects to the default (infura)
-// (i.e. ``http:/\/localhost:8545``)
-//const provider = new ethers.providers.JsonRpcProvider(); //local: http://localhost:8545
-//const provider = new ethers.getDefaultProvider( )
-//const provider = new ethers.providers.InfuraProvider( ); //Connect to mainnet
-const provider = new ethers.providers.InfuraProvider("mainnet", {
-    projectId: 'b3b8f96e79bd4df2b5e664e84ae3bc36',
-    projectSecret: '605a9161dd2546219aa261c38c0660f8'
+const provider = ethers.getDefaultProvider('mainnet', {
+    etherscan: '', //YOUR_ETHERSCAN_API_KEY
+    infura: {
+      projectId: 'b3b8f96e79bd4df2b5e664e84ae3bc36',
+      projectSecret: '605a9161dd2546219aa261c38c0660f8',
+    },
+    alchemy: '', //YOUR_ALCHEMY_API_KEY,
+    pocket: { //YOUR_POCKET_APPLICATION_KEY
+      applicationId:'' ,
+      applicationSecretKey:''
+    },
+    local: 'http://localhost:8545',
 });
 
-// The provider also allows signing transactions to
-// send ether and pay to change state within the blockchain.
-// For this, we need the account signer...
-//const signer = provider.getSigner()
+console.log(Signer);
 
-console.log(provider)
-//console.log(signer)
-async function awe() {
+async function Ethers() {
     try{
         console.log('awe');
 
         const balance = await provider.getBalance('ethers.eth');
         console.log(balance);
-        const formatE = ethers.utils.formatEther(balance);
+        const formatE = await ethers.utils.formatEther(balance);
         console.log(formatE);
-    }
+        const daiAddress = await "dai.tokens.ethers.eth";
+        console.log(daiAddress);
+        // The ERC-20 Contract ABI, which is a common contract interface
+        // for tokens (this is the Human-Readable ABI format)
+        const daiAbi = [
+            // Some details about the token
+            "function name() view returns (string)",
+            "function symbol() view returns (string)",
+        
+            // Get the account balance
+            "function balanceOf(address) view returns (uint)",
+        
+            // Send some of your tokens to someone else
+            "function transfer(address to, uint amount)",
+        
+            // An event triggered whenever anyone transfers to someone else
+            "event Transfer(address indexed from, address indexed to, uint amount)"
+        ];
+        // The Contract object
+        const daiContract = new ethers.Contract(daiAddress, daiAbi, provider);
+        console.log(daiContract);
+        const name = await daiContract.name();
+        console.log(name);
+        const balanceOf = await daiContract.balanceOf("0xf614f1ae4a7e6f456b3f1afb33856879657e0f50");
+        //console.log(balance);
+        console.log(ethers.utils.formatUnits(balanceOf, 18))
+        }
     catch(error) {
         console.log("this is the error", error);
     }
@@ -34,16 +59,4 @@ async function awe() {
         console.log("it works");
     }
 }
-awe();
-/************************ 
-//MetaMask
-// A Web3Provider wraps a standard Web3 provider, which is
-// what Metamask injects as window.ethereum into each page
-const providerr = new ethers.providers.Web3Provider(window.ethereum) //WINDOW IS NOT DEFINED!
-// The Metamask plugin also allows signing transactions to
-// send ether and pay to change state within the blockchain.
-// For this, you need the account signer...
-const signer = providerr.getSigner()
-console.log(providerr)
-console.log(signerr)
-***********************/
+Ethers();
