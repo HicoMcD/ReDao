@@ -15,6 +15,7 @@ const provider = ethers.getDefaultProvider('mainnet', {
     local: 'http://localhost:8545',
 });
 
+//Signer
 console.log(Signer);
 
 async function Ethers() {
@@ -49,7 +50,6 @@ async function Ethers() {
         const name = await daiContract.name();
         console.log(name);
         const balanceOf = await daiContract.balanceOf("0xf614f1ae4a7e6f456b3f1afb33856879657e0f50");
-        //console.log(balance);
         console.log(ethers.utils.formatUnits(balanceOf, 18))
         }
     catch(error) {
@@ -59,4 +59,5 @@ async function Ethers() {
         console.log("it works");
     }
 }
+
 Ethers();
